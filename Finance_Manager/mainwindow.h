@@ -21,6 +21,8 @@ private slots:
 
     void set_up_user_combo_box();
 
+    void reset_combo_box();
+
     // triggers
     void on_actionQuit_triggered();
 
@@ -30,8 +32,6 @@ private slots:
 
     void remove_user_button_clicked();
 
-    void update_user_data_ui();
-
     void on_select_by_id_combo_box_activated(int index);
 
     void create_purchase_button_clicked();
@@ -40,6 +40,8 @@ private slots:
     void on_actionUndo_triggered();
 
     void on_actionRedo_triggered();
+
+    void update_user_button_clicked();
 
 private:
     Ui::MainWindow *ui;

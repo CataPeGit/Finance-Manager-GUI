@@ -23,9 +23,12 @@ public :
     Repository get_main_repository();
 
     void add_user_to_repository(string _name, unsigned int _account_balance);    // type 1
-	void update_user_to_repository(); // type 2
+    void update_user_in_repository(unsigned int _id, std::pair<string, int> current_purchase); // type 2
     void remove_user_from_repository(string id_string); // type 3
 	void display_all_users();         
+
+    void set_balance_by_id(unsigned int _id, unsigned int new_balance);
+    void set_name_by_id(unsigned int _id, string new_name);
 
     void write_to_file();
     void read_from_file();
@@ -48,6 +51,4 @@ protected:
 	stack<Action> redo_stack;
 
 };
-
-
 

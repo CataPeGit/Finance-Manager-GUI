@@ -23,59 +23,49 @@ void Logic::add_user_to_repository(string _name, unsigned int _account_balance) 
 	main_repository.add_user_to_repository(new_user);
 }
 
-void Logic::update_user_to_repository(){
-	cout << "User id: ";
-	string id_string;
-	getline(cin, id_string);
-	try {
-		for (int i = 0; i < id_string.length(); i++) {
-			if (id_string[i] != '9' && id_string[i] != '8' && id_string[i] != '7' && id_string[i] != '6' && id_string[i] != '5' && id_string[i] != '4' && id_string[i] != '3' && id_string[i] != '2' && id_string[i] != '1' && id_string[i] != '0')
-			{
-				throw 252;
-			}
-		}
-	}
-	catch (int) {
-		cout << "You must enter a number bigger than 0.";
-		return;
-	}
-	unsigned int _id = stoi(id_string);
+void Logic::update_user_in_repository(unsigned int _id, std::pair<string, int> current_purchase){
+    // taking the current user data from UI and updating the user
+    for(User& user : main_repository.get_rep()){
+        if(user.get_id() == _id){
+            user.purchase_item(current_purchase.first, current_purchase.second);
+            undo_stack.push(Action(2, user));
+            main_repository.update_user_by_id(user);
+        }
+    }
+}
 
-	for (User& user : main_repository.get_rep()) {
-		if (user.get_id() == _id) {
-			// purchase item for user at the given id;
+void Logic::set_name_by_id(unsigned int _id, string new_name){
+    //changing user name based on id
+    for(User& current_user : main_repository.get_rep()){
+        if(current_user.get_id() == _id){
+            current_user.set_name(new_name);
+            break;
+        }
+    }
+}
 
-			string item;
-			cout << "Item name: ";
-			getline(cin, item);
-			cout << "Item price: ";
-			string price_str;
-			getline(cin, price_str);
-			try {
-				for (int i = 0; i < price_str.length(); i++) {
-					if (price_str[i] != '9' && price_str[i] != '8' && price_str[i] != '7' && price_str[i] != '6' && price_str[i] != '5' && price_str[i] != '4' && price_str[i] != '3' && price_str[i] != '2' && price_str[i] != '1' && price_str[i] != '0')
-					{
-						throw 253;
-					}
-				}
-			}
-			catch (int) {
-				cout << "You must enter a number bigger than 0.";
-				return;
-			}
-			unsigned int price = 0;
-			price = stoi(price_str);
-			user.purchase_item(item, price);
-
-			undo_stack.push(Action(2, user));
-			main_repository.update_user_by_id(user);
-		}
-	}
+void Logic::set_balance_by_id(unsigned int _id, unsigned int new_balance){
+    //changing user balance based on id
+    for(User& current_user : main_repository.get_rep()){
+        if(current_user.get_id() == _id){
+            current_user.set_balance(new_balance);
+            break;
+        }
+    }
 }
 
 void Logic::remove_user_from_repository(string id_string){
+    // add user to the undo stack
+    // and remove the user from the repository
+    int position = 0;
+    for(User& current_user: main_repository.get_rep()){
+        if(current_user.get_id() == (unsigned int)std::stoi(id_string)){
+            break;
+        }
+        position++;
+    }
 
-    undo_stack.push(Action(3, main_repository.get_user_by_id(std::stoi(id_string))));
+    undo_stack.push(Action(3, main_repository.get_user_by_id(position)));
     main_repository.remove_user_by_id(std::stoi(id_string));
 }
 
@@ -98,7 +88,7 @@ void Logic::display_user_by_id(){
 	string id_string;
 	getline(cin, id_string);
 	try {
-		for (int i = 0; i < id_string.length(); i++) {
+        for (unsigned long long int i = 0; i < id_string.length(); i++) {
 			if (id_string[i] != '9' && id_string[i] != '8' && id_string[i] != '7' && id_string[i] != '6' && id_string[i] != '5' && id_string[i] != '4' && id_string[i] != '3' && id_string[i] != '2' && id_string[i] != '1' && id_string[i] != '0')
 			{
 				throw 252;

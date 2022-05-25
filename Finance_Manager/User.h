@@ -11,8 +11,6 @@ using std::istream;
 
 class Repository;
 
-//template<typename ElementType>
-
 class User {
 
 	friend class Repository;
@@ -41,6 +39,7 @@ public:
 	void set_all_new_purchase_prices(std::map<std::string, unsigned int> _new_prices);
 	void set_balance(unsigned int new_balance);
 	void set_new_id(unsigned int new_id);
+    void set_name(string new_name);
 
 	// modifiers
 	void add_to_balance(unsigned int value_to_add);
@@ -60,8 +59,6 @@ public:
 
 	// operator overloads
 	friend ostream& operator<<(ostream& out, const User& user);
-
-	//void operator=(User& user);
 	
 
 private:

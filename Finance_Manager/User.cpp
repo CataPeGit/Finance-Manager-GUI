@@ -171,15 +171,3 @@ bool User::operator==(const User& user)
 	return true;
 }
 
-
-/*
-void User::operator=(User& user)
-{
-	id = user.get_id();
-	name = user.get_name();
-	account_balance = user.get_account_balance();
-	purchased_price = user.get_purchased_price();
-}
-*/
-
-

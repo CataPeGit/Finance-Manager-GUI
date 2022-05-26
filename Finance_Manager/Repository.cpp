@@ -26,7 +26,7 @@ unsigned int Repository::get_size() const
 
 User Repository::get_user_by_id(unsigned int _id) const
 {
-	return user_repository.at(_id-1);
+    return user_repository.at(_id);
 }
 
 void Repository::update_user_by_id(User updated_user){
@@ -34,36 +34,40 @@ void Repository::update_user_by_id(User updated_user){
 }
 
 void Repository::remove_user_by_id(unsigned int _id){
-	// removes the user having the given id
-	// and if needed modifies other user id's
-	user_repository.erase(user_repository.begin() + _id - 1);
-	for (User user : user_repository) {
-		if (user.get_id() > _id) {
-			user.set_new_id(_id - 1);
-		}
-	}
+    // removes the user having the given id
+    // and if needed modifies other user id's
+    if(user_repository.size() == 1){
+       user_repository.erase(user_repository.begin());
+    }
+
+    int position = 0;
+    for(User& current_user: user_repository){
+        if(current_user.get_id() == _id){
+            user_repository.erase(user_repository.begin() + position);
+            break;
+        }
+        position++;
+    }
+    //user_repository.erase(user_repository.begin()+ _id -1);
+
 }
 
 void Repository::add_user_to_repository(User user){
+    // adding user to the repository
 	user_repository.push_back(user);
 }
 
 void Repository::remove_user_from_repository(User user){
 	// search trough the repository for the user by id user and remove him 
-	remove_if(
-		user_repository.begin(),
-		user_repository.end(),
-		[user](User user_in_rep) {
-			if (user.get_id() == user_in_rep.get_id()) {
-				return true;
-			}
-			return false;
-		}
-	);
+    for(User current_user: user_repository){
+        if(current_user == user){
+            remove_user_by_id(current_user.get_id());
+        }
+    }
 }
 
 void Repository::change_user_balance_by_id(unsigned int _id, unsigned new_balance){
-
+    // changing balance of the user with a given id
     for(User& current_user: user_repository){
         if(current_user.get_id() == _id){
             current_user.set_balance(new_balance);
@@ -112,6 +116,15 @@ unsigned int Repository::get_available_id(){
     }
 
     return _id;
+}
+
+bool Repository::is_user_in_repository(unsigned int _id){
+    for(User& current_user : user_repository){
+        if(current_user.get_id() == _id){
+            return true;
+        }
+    }
+    return false;
 }
 
 void Repository::read_from_file()

@@ -18,9 +18,7 @@ using std::stringstream;
 using std::vector;
 
 class Repository {
-
 	friend class User;
-
 public:
 	friend vector<string> tokenize(string str, char delimiter);
 	Repository();
@@ -31,14 +29,15 @@ public:
 	unsigned int get_size() const;
 	User get_user_by_id(unsigned int _id) const;
 
-    void user_purchase_item_by_id(unsigned int _id, string new_item_name, unsigned int new_item_price);
+   	void user_purchase_item_by_id(unsigned int _id, string new_item_name, unsigned int new_item_price);
 
 	void update_user_by_id(User updated_user);
 	void remove_user_by_id(unsigned int _id);
 
-    void change_user_balance_by_id(unsigned int _id, unsigned new_balance);
+ 	void change_user_balance_by_id(unsigned int _id, unsigned new_balance);
 
-    unsigned int get_available_id();
+   	unsigned int get_available_id();
+	bool is_user_in_repository(unsigned int _id);
 
 	void add_user_to_repository(User user);
 	void remove_user_from_repository(User user);
@@ -47,11 +46,8 @@ public:
 	void read_from_file();
 	void write_to_file();
 
-    void operator=(Repository& other_repo);
-	//friend ifstream& operator>>(ifstream& data_file, const Repository& rep);
+    	void operator=(Repository& other_repo);
 
 private:
 	std::vector<User> user_repository;
-
 };
-

@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->add_user_button, SIGNAL(released()), this, SLOT(add_user_button_clicked()));
     connect(ui->remove_user_button, SIGNAL(released()), this, SLOT(remove_user_button_clicked()));
     connect(ui->create_purchase_button, SIGNAL(released()), this, SLOT(create_purchase_button_clicked()));
-    connect(ui->create_purchase_button, SIGNAL(released()), this, SLOT(update_user_button_clicked()));
+    connect(ui->update_user_button, SIGNAL(released()), this, SLOT(update_user_button_clicked()));
 
     //setting up purchases table UI
     ui->purchases_table->setColumnCount(2);
@@ -140,6 +140,14 @@ void MainWindow::on_select_by_id_combo_box_activated(int index)
     ui->user_id_label->setText(QString::fromStdString(std::to_string(current_user.get_id())));
     ui->account_balance_line_edit->setText(QString::fromStdString(std::to_string(current_user.get_account_balance())));
     ui->name_line_edit->setText(QString::fromStdString(current_user.get_name()));
+
+    // updating UI
+    for(auto const& [key, val] : app_logic.get_main_repository().get_user_by_id(index).get_purchased_price()){
+        ui->purchases_table->setRowCount(ui->purchases_table->rowCount()+1);
+        ui->purchases_table->setItem(ui->purchases_table->rowCount()-2,0, new QTableWidgetItem(QString::fromStdString(key)));
+        ui->purchases_table->setItem(ui->purchases_table->rowCount()-2,1, new QTableWidgetItem(val));
+    }
+
 }
 
 
@@ -210,10 +218,15 @@ void MainWindow::on_actionRedo_triggered()
 
 void MainWindow::update_user_button_clicked()
 {
-    for(int i = 2; i <= ui->purchases_table->rowCount(); i++){
-        std::pair<string, int> current_purchase;
-        current_purchase.first = ui->purchases_table->item(i, 1)->text().toStdString();
-        current_purchase.first = ui->purchases_table->item(i, 2)->text().toInt();
-    }
+    // updating user based on current data from UI
+    unsigned int _id = ui->user_id_label->text().toUInt();
+ //   for(int i = 1; i < ui->purchases_table->rowCount(); i++){
+ //       std::pair<string, int> current_purchase;
+  //      current_purchase.first = ui->purchases_table->item(i, 0)->text().toStdString();
+    //    current_purchase.second = ui->purchases_table->item(i, 1)->text().toInt();
+   //     app_logic.update_user_in_repository(_id, current_purchase);
+   // }
+    app_logic.set_name_by_id(_id,  ui->item_name_line_edit->text().toStdString());
+    app_logic.set_balance_by_id(_id, ui->account_balance_line_edit->text().toUInt());
 }
 
